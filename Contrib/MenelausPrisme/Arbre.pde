@@ -1,6 +1,7 @@
 public class Arbre {
 
   InteractiveFrame[] reperes ;
+  InteractiveFrame utile;
   WorldConstraint baseConstraint;
   LocalConstraint libre, rail, rail4, rail5;
   float rapport2, rapport3;
@@ -15,7 +16,7 @@ public class Arbre {
     reperes[3]=new InteractiveFrame(scene, reperes[0]);
     reperes[4]=new InteractiveFrame(scene, reperes[0]);   
     reperes[5]=new InteractiveFrame(scene, reperes[0]);
-
+    utile=new InteractiveFrame(scene, reperes[0]);
     // Initialize frames
     reperes[0].setTranslation(0, 0, 0); 
     reperes[1].setTranslation(20, 30, 240);  
@@ -24,7 +25,7 @@ public class Arbre {
     reperes[4].setTranslation(45, 100, 0);
     reperes[5].setTranslation(-25, 100, 0);  
 
-
+   
 
 
 
@@ -75,6 +76,7 @@ public class Arbre {
     float zz=-5;
     pg.noStroke();
     pg.beginShape(QUADS);
+    pg.normal(0, 0, 1);
     pg.fill(255, 180, 140);
     pg.vertex( -xx, -yy, zz);
     pg.vertex( -xx, yy, zz);
@@ -98,8 +100,7 @@ public class Arbre {
       fill(255, 255, 0);
     else 
     fill(0, 255, 0);
-
-    drawLigne(pg, #009900, new Vec(), v0);
+    fleche(pg, new Vec(), v0);
     drawSphere(pg, new Vec());
     drawSphere(pg, v0);
   }
@@ -140,12 +141,13 @@ public class Arbre {
     if (scene.mouseAgent().inputGrabber() == reperes[4] )  
       fill(255, 255, 0);
     else 
-    fill(0);   
+    fill(0, 255, 0);   
     Vec v=reperes[1].translation().get();
     v.multiply(rapport2);
     drawSphere(pg, new Vec());
     drawSphere(pg, v);
     drawLigne(pg, 0, new Vec(), v);
+    fleche(pg, new Vec(), v);
   }
 
   void drawPiquet5(PGraphics pg) {
@@ -154,7 +156,7 @@ public class Arbre {
     if (scene.mouseAgent().inputGrabber() == reperes[5] )  
       fill(255, 255, 0);
     else 
-    fill(0);
+    fill(0, 255, 0);
     pg.noStroke();
     pg.sphere(6);
     Vec v=reperes[1].translation().get();
@@ -162,6 +164,7 @@ public class Arbre {
     drawSphere(pg, new Vec());
     drawSphere(pg, v);
     drawLigne(pg, 0, new Vec(), v);
+    fleche(pg, new Vec(), v);
   }
 
 
@@ -187,8 +190,7 @@ public class Arbre {
     posText45=Vec.add(bar, b);
     drawSphere(#ffffff, bar);
     drawSphere(#ffffff, posText45);
-    drawLigne(#ffffff, bar, posText45);
-
+    fleche(#ffffff, bar, posText45);
     //mobile sur les deux premiers triangles
     Vec v=reperes[4].translation().get();
     v.multiply(1-tempo);
@@ -201,23 +203,23 @@ public class Arbre {
     translate(ww.x(), ww.y(), ww.z());
     sphere(6);
     popMatrix();
-
     posText4=Vec.add(v, ww);
-    drawLigne(#ffffff, v, posText4);
+    fleche(#ffffff, v, posText4);
+    
     v=reperes[5].translation().get();
     v.multiply(tempo);
     ww=Vec.multiply(reperes[1].translation().get(), 1+tempo*(-1+rapport3));    
     posText5=Vec.add(v, ww);
     drawSphere(#ffffff, v);
     drawSphere(#ffffff, posText5);
-    drawLigne(#ffffff, v, posText5);
+    fleche(#ffffff, v, posText5);
   }
   void displayText() {
     pushStyle();
     Vec pos;
     scene.beginScreenDrawing();
     textFont(font);
-    fill(0,150,0);
+    fill(0, 150, 0);
     pos = scene.eye().projectedCoordinatesOf(posText4);
     text("homothétie 1-->2", pos.x(), pos.y());
     pos = scene.eye().projectedCoordinatesOf(posText5);
@@ -226,5 +228,34 @@ public class Arbre {
     text("homothétie 3-->1", pos.x(), pos.y());
     scene.endScreenDrawing();
     popStyle();
+  }
+
+  void fleche(PGraphics pg, Vec from, Vec to) {  
+    Vec di=Vec.subtract( to, from);
+    float mg=di.magnitude();
+    if (mg>4) {
+      pushMatrix();
+      utile.setRotation(new Quat(new Vec(0, 0, 1), di));
+      utile.setTranslation( from);
+      utile.applyTransformation(scene);   
+      pg.noStroke();
+      Scene.drawCylinder(pg, 3.1, mg);
+
+      popMatrix();
+    }
+  }  
+  void fleche(int c, Vec from, Vec to) {  
+    Vec di=Vec.subtract( to, from);
+    float mg=di.magnitude();
+    if (mg>4) {
+      pushMatrix();
+      utile.setRotation(new Quat(new Vec(0, 0, 1), di));
+      utile.setTranslation( from);
+      utile.applyTransformation(scene);   
+      noStroke();
+      fill(c);
+      scene.drawCylinder(3.1, mg);     
+      popMatrix();
+    }
   }
 }
