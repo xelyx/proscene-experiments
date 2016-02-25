@@ -1,17 +1,20 @@
-/** spiralium : exercice sur les similitudes: scale, rotation,translation
+/** sunflower
  *
- * fait le 24/02/2016 par Jacques Maire
+ * fait le 25/02/2016 par Jacques Maire
  *
+ * todo: la 3D en utilisant les frames
  **/
+ 
+
+ 
+ 
 import remixlab.proscene.*;
 import remixlab.dandelion.core.*;
 import remixlab.dandelion.geom.*;
 
 Scene scene;
 InteractiveFrame  frame1;
-//sunflower
-// fait le 25/02/2016 par jacques maire
-// todo: la 3D en utilisant les frames
+
 Frame utile;
 Graine[] graines;
 int ng,tempo;
