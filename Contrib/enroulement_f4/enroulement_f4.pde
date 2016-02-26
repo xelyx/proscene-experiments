@@ -26,7 +26,7 @@ void setup() {
   frame1.translate(0, 0, 0);
   frame1.rotate((Rotation)(new Quat(new Vec(0, 1, 0), 1.0)));
   frame1.scale(1.06);
-  nf=36;//nombre de facettes sur les anneaux
+  nf=90;//nombre de facettes sur les anneaux
   ptSim1=new Vec[nf];
   ptSim2=new Vec[nf];
   ptRef=new Vec[nf];
@@ -45,14 +45,15 @@ void setup() {
 
 
 void draw() {
-  background(55, 55, 0);
+  background(85, 85, 150);
   tempo=frameCount*0.01;
-  pointLight(255, 255, 0, 5000, 1000, 1000);
-  pointLight(255, 255, 0, -1000, 3000, -1000);
+  pointLight(255, 255, 255, 5000, -3000,0);
+  pointLight(155, 155, 255, -1000, 3000, -1000);
+  lights();lights();
   if (scene.mouseAgent().inputGrabber() == frame1)  
-    fill(255, 0, 0);
-  else 
-  fill(255, 255, 0);
+   fill(255, 255, 255);
+  else  {fill(255,220,0);}
+  
   frame1.draw();
 }
 
